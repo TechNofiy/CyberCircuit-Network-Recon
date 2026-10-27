@@ -1,103 +1,184 @@
-# CyberCircuit Network Recon V5
+# ⚡ CyberCircuit Network Recon V5
 
-**Platform:** Windows 10/11 · **UI:** Local web dashboard · **Runtime:** Python 3.10+  
-**Design:** V1 dark/cyan dashboard retained; V2 defensive plugin workbench preserved; V3 added a Docker-based cross-platform build lab; V4 added permission-gated port assessment and detailed clickable findings; V5 adds a dedicated flagged-device review panel beneath the main inventory.
+<p align="center">
+  <strong>🔍 NETWORK VISIBILITY • DEVICE INTELLIGENCE • SECURITY INSIGHTS</strong>
+</p>
 
-## What's new in V5
+<p align="center">
+  A cyber-style Windows network reconnaissance dashboard for understanding your network, inspecting reachable services, and reviewing security-relevant findings on devices you are authorized to assess.
+</p>
 
-- Separate **Flagged Device Inventory** directly below Device inventory.
-- Evidence-based high/medium review queue with observed ports, reasons and recommended next checks.
-- Click any flagged device for detailed observed information and scan limitations.
+<p align="center">
+  <img src="https://img.shields.io/badge/Platform-Windows-00D9FF?style=for-the-badge&logo=windows&logoColor=white" alt="Windows">
+  <img src="https://img.shields.io/badge/Interface-Local%20Web%20GUI-8A2BE2?style=for-the-badge" alt="Local web GUI">
+  <img src="https://img.shields.io/badge/Version-V5-00FF9C?style=for-the-badge" alt="Version V5">
+  <img src="https://img.shields.io/badge/Use-Authorized%20Networks-FFB000?style=for-the-badge" alt="Authorized networks">
+</p>
 
-## What's new in V4
+---
 
-- Requires an explicit permission confirmation in the GUI and again on the server before starting a scan.
-- Lets you choose comma-separated TCP ports or a port range, capped at 256 ports per scan; LAN scope remains private IPv4 and up to 256 addresses.
-- Every open port has a clickable detail card explaining likely service purpose, what reachability means, recommended checks, severity context and limitations. Informational results are shown too; an open port alone is not proof of a vulnerability.
-- No exploit attempts, password/login attempts, or attempts to compromise devices.
-- Adds a Cross-Platform Build Lab that generates a ZIP project for a harmless Go system-information CLI.
-- Select Linux, Windows or macOS plus supported CPU architecture targets. Docker builds the diagnostic binary from source; install Docker Desktop/Engine separately.
-- Adds Device Fleet workflow notes for explicit, authenticated, manually installed management agents.
-- No reverse-shell generator, arbitrary remote shell, covert agent deployment, persistence or credential collection.
+## 📑 Table of Contents
 
-## V2 features retained
+1. [Overview](#-overview)
+2. [Features](#-features)
+3. [Dashboard Workflow](#-dashboard-workflow)
+4. [Installation and Launch](#-installation-and-launch)
+5. [Using the Dashboard](#-using-the-dashboard)
+6. [Flagged Device Inventory](#-flagged-device-inventory)
+7. [Build Lab](#-build-lab)
+8. [Troubleshooting](#-troubleshooting)
+9. [Security and Responsible Use](#-security-and-responsible-use)
+10. [Version History](#-version-history)
 
-- Retains V1's dashboard styling, LAN inventory table, activity log, common TCP-port observations and CSV/JSON export.
-- Faster but bounded concurrent checks for small authorised LAN ranges.
-- Strictly restricts network scans to RFC1918 private IPv4 ranges: `10.0.0.0/8`, `172.16.0.0/12`, and `192.168.0.0/16`, up to 256 addresses per scan.
-- Adds an extendable plugin structure in `plugins/`; plugin enable/disable settings are stored in `config.json`.
-- Adds DNS/reverse DNS lookup, TLS certificate audit, HTTP security-header review, local host profile and Windows TCP connection-state summary.
-- Adds scan progress, recent scan history, module result history and combined JSON reports.
-- Adds localhost/Origin checks for POST requests; the service binds to `127.0.0.1` only.
-- Preserves the original V1 source in `V1-backup/` for reference.
+---
 
-## Start the dashboard
+## 🔍 Overview
 
-1. Extract the ZIP into a normal writable folder, e.g. `C:\Tools\CyberCircuit-Network-Recon-V3`.
-2. Install Python 3.10 or newer from <https://www.python.org/downloads/> if needed. Enable **Add Python to PATH**.
-3. Double-click `BUILD-WINDOWS.bat` to run a syntax/build check.
-4. Double-click `START-CyberCircuit.bat`.
-5. Open <http://127.0.0.1:8765> in your browser.
+**CyberCircuit Network Recon V5** is a local web-based network reconnaissance tool designed to help you understand devices and services on networks you own or have explicit permission to assess.
 
-No pip packages are required for the dashboard. Docker is optional unless you use the Build Lab. The first run creates `config.json` when you change a plugin's enabled state. Close the console window or press Ctrl+C in it to stop the server.
+V5 adds a dedicated **Flagged Device Inventory** beneath the regular Device Inventory, making it easier to identify devices that deserve closer inspection while retaining the existing V4 dashboard features.
 
-## Build Lab
+The interface runs locally on your Windows computer and is accessed through your web browser.
 
-Open the dashboard and select a target OS and architecture in **Cross-Platform Build Lab**, then choose **Generate build project ZIP**. Extract the ZIP and run `BUILD-WINDOWS.bat` on Windows or `build.sh` on macOS/Linux. Docker must be installed and running. The output is written to `dist/`. The generated program only prints basic host/runtime metadata. Review the generated source before running it.
+## 🚀 Features
 
-The Docker build scaffold supports Linux (amd64, arm64, ARMv7), Windows (amd64, arm64), and macOS (amd64, arm64). Actual execution must occur on a compatible operating system.
-
-## Built-in modules
-
-| Module | Purpose |
+| Feature | Description |
 |---|---|
-| LAN scanner | Finds responsive hosts on an authorised RFC1918 subnet and checks selected user-selected TCP ports (up to 256 per scan). |
-| DNS & Reverse DNS | Resolves a hostname or looks up a PTR name for an IP. |
-| TLS Certificate Audit | Validates a target's TLS certificate using the local system trust store, then reports issuer and expiry. |
-| Web Security Headers | Sends a HEAD request and reviews common security headers. It does not follow redirects or download page content. |
-| Local Host Profile | Read-only OS, Python, machine architecture and local-address summary. |
-| Process Inventory | Read-only capped sample of local process names, PIDs and memory use; no process actions. |
-| Connection Snapshot | On Windows, summarises local TCP connection states using `netstat -ano`; does not capture packet contents. |
-| Windows Security Posture | Best-effort read-only Windows Firewall profile and Microsoft Defender status summary. |
-| Reports & History | Keeps recent scan summaries and module results in memory and exports JSON/CSV. |
+| 🖥️ Device Inventory | Review discovered devices and available host information. |
+| 🚩 Flagged Device Inventory | Highlight devices with observations that may deserve attention. |
+| 🔌 Port Scanning | Check selected TCP ports for reachability on authorized private LAN targets. |
+| 🔎 Service Insights | Review available service labels and interpret observed results. |
+| 🧠 Finding Details | Inspect evidence, explanations, limitations, and recommended follow-up checks. |
+| 📊 Scan History | Review previous scan results where supported by the application. |
+| 📤 Data Export | Export supported results in JSON and CSV formats. |
+| 🧩 Reconnaissance Plugins | Use the included defensive network and host inspection modules. |
+| 🐳 Docker Build Lab | Generate a harmless diagnostic CLI starter project for supported target platforms and architectures. |
+| 🎨 Cyber GUI | Use the existing dark, cyber-inspired local web interface. |
 
-### Add a plugin
+> **Important:** An open port is not automatically a security vulnerability. Flags are review indicators based on observations, not proof that a device is compromised.
 
-1. Create a Python module under `plugins/`, such as `plugins/example_check.py`.
-2. Add a `PLUGIN` dictionary with `id`, `name`, `description`, `category`, `requires_target`, `placeholder` and `button` fields.
-3. Implement `run(target: str)` and return JSON-serialisable data. Raise `ValueError` for validation failures.
-4. Import the module in `app.py` and add it to `PLUGIN_MODULES`. Keep the module allowlist explicit; do not load plugin modules from user-submitted names or paths.
-5. Run `BUILD-WINDOWS.bat`, then restart the dashboard.
+## 🗺️ Dashboard Workflow
 
-## Safety boundaries
-
-This project is for inventory and defensive checks on systems and services you own or are authorised to assess. The dashboard is not an exploitation or post-exploitation framework. It deliberately does **not** include covert command-and-control, arbitrary remote shell, payload/stager generation, persistence, privilege escalation, keylogging, screenshot capture, email extraction, credential theft, evasion or propagation. The BYOB inspiration is limited to a modular interface and separable feature plugins.
-
-TLS and HTTP observations are not a full penetration test. DNS results and open ports can change; manually verify anything important. Web audit targets must be valid hostnames/IPs and avoid loopback, link-local and special-purpose addresses. Private RFC1918 addresses are allowed for a local homelab audit.
-
-## Troubleshooting
-
-- **Python not found:** install Python 3.10+ and check **Add Python to PATH**.
-- **Port 8765 is in use:** close the other application or change `PORT` in `app.py`.
-- **A scan finds few devices:** verify the CIDR with `ipconfig`, then check host firewalls and device state. ICMP may be blocked.
-- **TLS test fails:** the service may have an expired, self-signed or name-mismatched certificate, or the host may not offer TLS on the selected port.
-- **Web headers show an HTTP error:** the server may not support HEAD, require authentication or return a redirect. V2 intentionally does not retry with GET.
-- **Plugin settings won't save:** extract the ZIP to a folder where your Windows account can write `config.json`.
-
-## Privacy
-
-No cloud service or external telemetry is used by the app. Web/DNS/TLS modules contact only the target you explicitly enter. The dashboard is designed for localhost and should not be port-forwarded or exposed to a public network.
-
-## Run offline checks
-
-From the extracted project folder, run:
-
-```bat
-py -3 -m unittest discover -s tests -v
+```mermaid
+flowchart TD
+    A["Launch CyberCircuit"] --> B["Open Local Web Dashboard"]
+    B --> C["Confirm Authorization"]
+    C --> D["Select Private LAN Targets"]
+    D --> E["Choose TCP Ports"]
+    E --> F["Run Scan"]
+    F --> G["Review Device Inventory"]
+    G --> H["Inspect Flagged Device Inventory"]
+    H --> I["Open Finding Details"]
+    I --> J["Export or Investigate Results"]
 ```
 
-The tests validate local-only scope rules, plugin registration, target validation and core GUI content. They do not run a network scan against an actual LAN.
+## 💻 Installation and Launch
 
+### Requirements
 
-### V5 Flagged Device Inventory
-A dedicated panel below Device inventory summarizes devices with high/medium-priority observations from the selected open TCP ports. Click a flagged device for the evidence, why it was flagged, practical follow-up checks, and scan limitations. These are triage indicators, not confirmed vulnerabilities.
+- Windows 10 or Windows 11.
+- Python installed if it is not already available.
+- A modern browser such as Microsoft Edge, Chrome, or Firefox.
+- Docker Desktop if you want to use the optional Build Lab.
+
+### Start the application
+
+1. Download the project ZIP from the repository's **Releases** section, or use the project's ZIP download.
+2. Extract the ZIP to a folder you can access.
+3. Open the extracted `CyberCircuit-Network-Recon-V5` folder.
+4. Double-click **`START-CyberCircuit.bat`**.
+5. Open your browser and visit:
+
+   **http://127.0.0.1:8765**
+
+Keep the terminal window open while you use the dashboard. Close it when you want to stop the application.
+
+## 🎛️ Using the Dashboard
+
+### 1. Authorize the assessment
+
+Only scan networks and devices that you own or have explicit permission to assess. Use the dashboard's permission confirmation before starting.
+
+### 2. Select targets and ports
+
+Choose an authorized private LAN range and the TCP ports you want to inspect. Keep your scan within the application's supported scope.
+
+### 3. Review device information
+
+Start with the regular Device Inventory to understand which devices were discovered and what information was observed.
+
+### 4. Open individual findings
+
+Select a finding to review the evidence, what it means, why it may matter, and suggested next steps. Treat service identification as best-effort unless the application provides stronger evidence.
+
+## 🚩 Flagged Device Inventory
+
+The dedicated Flagged Device Inventory appears **directly below the regular Device Inventory**.
+
+It helps surface devices with observations that may need follow-up, including:
+
+- Observed IP addresses and hostnames when available.
+- Reachable TCP ports and associated service labels.
+- Finding priority and reason for review.
+- Scan evidence and timestamps where available.
+- Suggested defensive checks and remediation guidance.
+
+If nothing is flagged, that does not prove the network is secure. Review the normal inventory and informational findings as well.
+
+## 🐳 Build Lab
+
+The optional Docker Build Lab generates a starter project for a harmless diagnostic command-line program.
+
+The generated example reports basic system metadata, such as the operating system, architecture, hostname, and runtime version.
+
+Supported target selections depend on the generated project configuration. Docker is required for the container-based build workflow.
+
+The Build Lab is separate from the network reconnaissance dashboard; it does not mean the application can successfully compile or run every possible platform target in every environment.
+
+## 🧰 Troubleshooting
+
+### The dashboard does not open
+
+- Make sure the application is running.
+- Visit `http://127.0.0.1:8765` exactly.
+- Check whether another application is already using port `8765`.
+- Review the terminal window for error messages.
+
+### Python is not found
+
+Install Python for Windows and ensure it is available to the launcher. Reopen the terminal or start the application again after installation.
+
+### No devices are discovered
+
+- Verify that you selected the correct private LAN range.
+- Check that your computer is connected to the network.
+- Remember that firewalls, Wi-Fi client isolation, and device sleep can affect discovery.
+- Check that the devices are within the supported scan scope.
+
+### A port appears open, but its service is unknown
+
+Port numbers are only clues. Services can use nonstandard ports, and identifying a service accurately may require additional protocol-specific checks.
+
+### Docker Build Lab fails
+
+- Check that Docker Desktop is installed and running.
+- Confirm that the requested target architecture is supported by the build configuration.
+- Review the generated build output for errors.
+
+## 🔐 Security and Responsible Use
+
+CyberCircuit Network Recon is intended for authorized network visibility and defensive assessment.
+
+- Only scan networks and devices you own or have explicit permission to assess.
+- Keep the dashboard bound to the local machine unless you understand and intentionally configure a different access model.
+- Do not treat a successful connection check as proof of a vulnerability.
+- Validate important findings before making security decisions.
+- Avoid scanning systems outside your authorized scope.
+
+The application is a reconnaissance aid, not a guarantee of security or a replacement for a full professional security assessment.
+
+## 📦 Version History
+
+### V5
+- Added a separate Flagged Device Inventory below Device Inventory.
+- Added

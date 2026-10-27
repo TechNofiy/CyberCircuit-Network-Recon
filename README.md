@@ -176,9 +176,3 @@ CyberCircuit Network Recon is intended for authorized network visibility and def
 - Avoid scanning systems outside your authorized scope.
 
 The application is a reconnaissance aid, not a guarantee of security or a replacement for a full professional security assessment.
-
-## 📦 Version History
-
-### V5
-- Added a separate Flagged Device Inventory below Device Inventory.
-- Added
